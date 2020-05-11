@@ -13,6 +13,7 @@ class GenreManager(models.Manager):
 
 class Genre(models.Model):
     """Model for Genres of anime"""
+
     name = models.CharField(max_length=30, unique=True)
 
     objects = GenreManager()
@@ -44,7 +45,7 @@ class Anime(models.Model):
     author = models.CharField(max_length=40)
     rating = models.DecimalField(max_digits=4, decimal_places=2, default=0)
     no_of_ratings = models.IntegerField(default=0)
-    genre = models.ManyToManyField(Genre, 'animes')
+    genre = models.ManyToManyField(Genre, "animes")
 
     objects = AnimeManager()
 
@@ -57,15 +58,16 @@ class Anime(models.Model):
 
 class AnimeSeason(models.Model):
     """Model for different seasons of an anime"""
-    WINTER = 'WIN'
-    SPRING = 'SPR'
-    SUMMER = 'SUM'
-    FALL = 'FAL'
+
+    WINTER = "WIN"
+    SPRING = "SPR"
+    SUMMER = "SUM"
+    FALL = "FAL"
     TIME_OF_YEAR_CHOICES = [
-        (WINTER, 'Winter'),
-        (SPRING, 'Sprint'),
-        (SUMMER, 'Summer'),
-        (FALL, 'Fall'),
+        (WINTER, "Winter"),
+        (SPRING, "Sprint"),
+        (SUMMER, "Summer"),
+        (FALL, "Fall"),
     ]
     season = models.PositiveSmallIntegerField()
     airing = models.BooleanField()
@@ -73,10 +75,12 @@ class AnimeSeason(models.Model):
     year = models.PositiveSmallIntegerField()
     name_of_season = models.CharField(max_length=100)
     no_of_episodes = models.PositiveSmallIntegerField()
-    anime = models.ForeignKey(
-        Anime, related_name='seasong', on_delete=models.CASCADE)
+    anime = models.ForeignKey(Anime, related_name="seasong", on_delete=models.CASCADE)
 
     class Meta:
-        order_with_respect_to = 'anime'
-        get_latest_by = 'season'
-        unique_together = ['anime', 'season']
+        order_with_respect_to = "anime"
+        get_latest_by = "season"
+        unique_together = ["anime", "season"]
+
+    def __str__(self):
+        return f"{self.anime} S{self.season}"

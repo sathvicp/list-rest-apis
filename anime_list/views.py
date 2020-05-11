@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets, filters
-from anime_list import serializers, models
+from anime_list import serializers, models, permissions
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
 
 class AnimeViewSet(viewsets.ModelViewSet):
@@ -9,6 +11,8 @@ class AnimeViewSet(viewsets.ModelViewSet):
     queryset = models.Anime.objects.all()
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.AdminCanEditPermission,)
 
 
 class AnimeSeasonViewSet(viewsets.ModelViewSet):
@@ -17,9 +21,13 @@ class AnimeSeasonViewSet(viewsets.ModelViewSet):
     queryset = models.AnimeSeason.objects.all()
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name_of_season')
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.AdminCanEditPermission,)
 
 
 class GenreViewSet(viewsets.ModelViewSet):
     """API ViewSet for managing genres"""
     serializer_class = serializers.GenreSerializer
     queryset = models.Genre.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.AdminCanEditPermission,)
