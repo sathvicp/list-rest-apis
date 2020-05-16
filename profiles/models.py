@@ -10,11 +10,10 @@ class UserProfileManager(BaseUserManager):
     def create_user(self, email, first_name, last_name, password=None):
         """Function to create a normal user in stampede"""
         if not email:
-            raise ValueError('User must have an email')
+            raise ValueError("User must have an email")
 
         email = self.normalize_email(email)
-        user = self.model(email=email, first_name=first_name,
-                          last_name=last_name)
+        user = self.model(email=email, first_name=first_name, last_name=last_name)
         user.set_password(password)
         user.save(using=self._db)
 
@@ -33,6 +32,7 @@ class UserProfileManager(BaseUserManager):
 
 class UserProfile(AbstractBaseUser, PermissionsMixin):
     """User model for stampede"""
+
     email = models.EmailField(max_length=255, unique=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -41,12 +41,12 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
     objects = UserProfileManager()
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["first_name", "last_name"]
 
     def get_full_name(self):
         """Retrieve full name of user"""
-        return f'{self.first_name} {self.last_name}'
+        return f"{self.first_name} {self.last_name}"
 
     def get_short_name(self):
         """Retrieve short name of user"""
