@@ -41,13 +41,15 @@ class Anime(models.Model):
     """Model for details about an anime"""
 
     name = models.CharField(max_length=100)
-    no_of_seasons = models.PositiveSmallIntegerField(default=0)
     author = models.CharField(max_length=40)
     rating = models.DecimalField(max_digits=4, decimal_places=2, default=0)
-    no_of_ratings = models.IntegerField(default=0)
     genre = models.ManyToManyField(Genre, "animes")
 
     objects = AnimeManager()
+
+    @property
+    def season_count(self):
+        return self.seasons.count()
 
     def __unicode__(self):
         return self.name
@@ -74,8 +76,8 @@ class AnimeSeason(models.Model):
     time_of_year = models.CharField(max_length=3, choices=TIME_OF_YEAR_CHOICES)
     year = models.PositiveSmallIntegerField()
     name_of_season = models.CharField(max_length=100)
-    no_of_episodes = models.PositiveSmallIntegerField()
-    anime = models.ForeignKey(Anime, related_name="seasong", on_delete=models.CASCADE)
+    episode_count = models.PositiveSmallIntegerField()
+    anime = models.ForeignKey(Anime, related_name="seasons", on_delete=models.CASCADE)
 
     class Meta:
         order_with_respect_to = "anime"

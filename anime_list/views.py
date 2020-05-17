@@ -18,7 +18,6 @@ class AnimeViewSet(viewsets.ModelViewSet):
     )
     search_fields = ("name",)
     filterset_fields = (
-        "no_of_seasons",
         "rating",
         "genre",
         "id",
@@ -36,13 +35,6 @@ class AnimeSeasonViewSet(viewsets.ModelViewSet):
     search_fields = ("name_of_season",)
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.AdminCanEditPermission,)
-
-    def create(self, request, *args, **kwargs):
-        """Increment no_of_season for anime"""
-        anime = models.Anime.objects.get(pk=request.data.get("anime"))
-        anime.no_of_seasons = F("no_of_seasons") + 1
-        anime.save(update_fields=["no_of_seasons"])
-        return super().create(request, *args, **kwargs)
 
 
 class GenreViewSet(viewsets.ModelViewSet):

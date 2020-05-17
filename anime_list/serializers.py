@@ -35,17 +35,14 @@ class AnimeSerializer(serializers.ModelSerializer):
         model = models.Anime
         fields = (
             "name",
-            "no_of_seasons",
+            "season_count",
             "author",
             "rating",
             "genre",
-            "no_of_ratings",
             "id",
         )
         extra_kwargs = {
-            "no_of_seasons": {"read_only": True,},
             "rating": {"read_only": True,},
-            "no_of_ratings": {"read_only": True,},
             "id": {"read_only": True,},
         }
 
@@ -71,5 +68,5 @@ class AnimeSeasonSerializer(serializers.ModelSerializer):
             "year",
             "name_of_season",
             "anime",
-            "no_of_episodes",
+            "episode_count",
         )
